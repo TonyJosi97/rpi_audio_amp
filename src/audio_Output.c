@@ -28,7 +28,7 @@ void audio_Out_Callback(void* data, Uint8 *stream, int len);
 
 typedef struct __AUDIO_OP_INTERNAL {
 
-    uint8_t                 stop_Thread;
+    Uint8                   stop_Thread;
     Audio_Out_t            *ao_Out_Obj_ptr;
 
 } Audio_OP_Internal_t;
@@ -68,4 +68,18 @@ Audio_Out_Status_t audio_Out_Close(Audio_Out_t *);
 
 void audio_Out_Callback(void* data, Uint8 *stream, int len) {
 
+    OP_DBUF_T *temp_buf_ptr;
+
+    pthread_mutex_lock(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock));
+    if(__gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_0) {
+        temp_buf_ptr = __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_0;
+    } else if(__gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_1) {
+        temp_buf_ptr = __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_1;
+    } else {
+        return AUDIO_OUT_FAIL;
+    }
+    pthread_mutex_unlock(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock));
+
+    memcpy(stream, temp_buf_ptr, len);
+    
 } 

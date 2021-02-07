@@ -13,17 +13,19 @@
 
 #include <stdint.h>
 #include <pthread.h>
+#include <sys/types.h>
 
-typedef uint8_t U8;
+typedef Uint8 OP_DBUF_T;
 
 typedef struct __AUDIO_OUT {
 
     int                 sampling_Freq;
-    uint8_t             audio_Channel;
-    uint8_t             samples_Per_Frame;
-    uint16_t           *ip_Data_Buffer_1; 
-    uint16_t           *ip_Data_Buffer_2;
+    Uint8               audio_Channel;
+    Uint8               samples_Per_Frame;
+    OP_DBUF_T          *ip_Data_Buffer_0; 
+    OP_DBUF_T          *ip_Data_Buffer_1;
     pthread_mutex_t     buf_Lock;
+    Uint8               ip_Data_Buffer_MUX;
 
 } Audio_Out_t;
 
@@ -35,6 +37,14 @@ typedef enum {
     AUDIO_OUT_INVLD_ARG
 
 } Audio_Out_Status_t;
+
+typedef enum {
+
+    AUDIO_OUT_BUFFER_0,
+    AUDIO_OUT_BUFFER_1,
+    AUDIO_OUT_BUFFER_2
+
+} Audio_Out_Buffer_ID_t;
 
 Audio_Out_Status_t audio_Out_Init(Audio_Out_t *);
 Audio_Out_Status_t audio_Out_Start_Thread(Audio_Out_t *);
