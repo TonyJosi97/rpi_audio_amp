@@ -32,6 +32,7 @@ typedef struct __AUDIO_OP_INTERNAL {
     pthread_t               audio_Out_Thread;
     Uint8                   stop_Thread;
     Audio_Out_t            *ao_Out_Obj_ptr;
+    SDL_AudioSpec          *sdl_Audio_Spec_Ptr;
 
 } Audio_OP_Internal_t;
 
@@ -62,6 +63,7 @@ Audio_Out_Status_t audio_Out_Init(Audio_Out_t *ao_user_Obj) {
 
     __gs_Audio_Obj.stop_Thread = 1;
     __gs_Audio_Obj.ao_Out_Obj_ptr = ao_user_Obj;
+    __gs_Audio_Obj.sdl_Audio_Spec_Ptr = __audio_Spec_Ptr;
 
     return AUDIO_OUT_OK;
 
@@ -97,6 +99,7 @@ Audio_Out_Status_t audio_Out_Close() {
         return AUDIO_OUT_FAIL;
 
     SDL_CloseAudio();
+    free(__gs_Audio_Obj.sdl_Audio_Spec_Ptr);
     return AUDIO_OUT_OK;
 
 }
