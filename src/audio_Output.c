@@ -94,7 +94,7 @@ Audio_Out_Status_t audio_Out_Stop_Thread() {
 
 Audio_Out_Status_t audio_Out_Close() {
 
-    if(pthread_mutex_destroy(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock) != 0))
+    if(pthread_mutex_destroy(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock)) != 0)
         return AUDIO_OUT_FAIL;
 
     SDL_CloseAudio();
@@ -115,7 +115,7 @@ void audio_Out_Callback(void* data, Uint8 *stream, int len) {
         __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_0;
         temp_buf_ptr = __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_1;
     } else {
-        return AUDIO_OUT_FAIL;
+        return;
     }
     pthread_mutex_unlock(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock));
 

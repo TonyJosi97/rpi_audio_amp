@@ -25,7 +25,7 @@ typedef struct __AUDIO_OUT {
 
     int                 sampling_Freq;
     Uint8               audio_Channel;
-    Uint8               samples_Per_Frame;
+    Uint16              samples_Per_Frame;
     OP_DBUF_T          *ip_Data_Buffer_0; 
     OP_DBUF_T          *ip_Data_Buffer_1;
     pthread_mutex_t     buf_Lock;
