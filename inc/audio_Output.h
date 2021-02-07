@@ -15,6 +15,8 @@
 #include <pthread.h>
 #include <sys/types.h>
 
+#define PLAYER_CORE_SLEEP_TIME      1
+
 typedef Uint8 OP_DBUF_T;
 
 typedef struct __AUDIO_OUT {
@@ -47,6 +49,6 @@ typedef enum {
 } Audio_Out_Buffer_ID_t;
 
 Audio_Out_Status_t audio_Out_Init(Audio_Out_t *);
-Audio_Out_Status_t audio_Out_Start_Thread(Audio_Out_t *);
-Audio_Out_Status_t audio_Out_Stop_Thread(Audio_Out_t *);
-Audio_Out_Status_t audio_Out_Close(Audio_Out_t *);
+Audio_Out_Status_t audio_Out_Start_Thread();
+Audio_Out_Status_t audio_Out_Stop_Thread();
+Audio_Out_Status_t audio_Out_Close();

@@ -25,9 +25,11 @@
 #define __NULL_POINTER_CHECK(ptr)   assert(ptr != NULL)
 
 void audio_Out_Callback(void* data, Uint8 *stream, int len);
+static void * audio_Player_Core(void *);
 
 typedef struct __AUDIO_OP_INTERNAL {
 
+    pthread_t               audio_Out_Thread;
     Uint8                   stop_Thread;
     Audio_Out_t            *ao_Out_Obj_ptr;
 
@@ -54,6 +56,10 @@ Audio_Out_Status_t audio_Out_Init(Audio_Out_t *ao_user_Obj) {
     __gs_Audio_Obj.stop_Thread = 1;
     __gs_Audio_Obj.ao_Out_Obj_ptr = ao_user_Obj;
 
+    if (pthread_mutex_init(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock), NULL) != 0) {
+        return AUDIO_OUT_FAIL;
+    }
+
     return AUDIO_OUT_OK;
 
 __Free_mem_N_Return:
@@ -62,7 +68,14 @@ __Free_mem_N_Return:
 
 }
 
-Audio_Out_Status_t audio_Out_Start_Thread(Audio_Out_t *);
+Audio_Out_Status_t audio_Out_Start_Thread() {
+
+    if(pthread_create(&(__gs_Audio_Obj.audio_Out_Thread), NULL, audio_Player_Core, NULL) != 0)
+        return AUDIO_OUT_FAIL;
+
+    return AUDIO_OUT_OK;
+}
+
 Audio_Out_Status_t audio_Out_Stop_Thread(Audio_Out_t *);
 Audio_Out_Status_t audio_Out_Close(Audio_Out_t *);
 
@@ -83,3 +96,17 @@ void audio_Out_Callback(void* data, Uint8 *stream, int len) {
     memcpy(stream, temp_buf_ptr, len);
     
 } 
+
+static void * audio_Player_Core(void *args) {
+
+    (void *) args;
+
+    SDL_PauseAudio(0);
+
+    while(!__gs_Audio_Obj.stop_Thread) {
+        sleep(PLAYER_CORE_SLEEP_TIME);
+    }
+
+    SDL_PauseAudio(1);
+
+}
