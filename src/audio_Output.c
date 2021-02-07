@@ -74,10 +74,17 @@ Audio_Out_Status_t audio_Out_Start_Thread() {
         return AUDIO_OUT_FAIL;
 
     return AUDIO_OUT_OK;
+
 }
 
-Audio_Out_Status_t audio_Out_Stop_Thread(Audio_Out_t *);
-Audio_Out_Status_t audio_Out_Close(Audio_Out_t *);
+Audio_Out_Status_t audio_Out_Stop_Thread() {
+
+    __gs_Audio_Obj.stop_Thread = 1;
+    return AUDIO_OUT_OK;
+
+}
+
+Audio_Out_Status_t audio_Out_Close();
 
 void audio_Out_Callback(void* data, Uint8 *stream, int len) {
 
