@@ -23,6 +23,12 @@ int main(int argc, char* argv[]) {
     }
 
     fill_Buffer(&main_Obj);
+    audio_Out_Start_Thread();
+
+    while (1) {
+        fill_Buffer(&main_Obj);
+    }
+    
 
     return 0;
 
