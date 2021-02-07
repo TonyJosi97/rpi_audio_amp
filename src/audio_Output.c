@@ -80,11 +80,23 @@ Audio_Out_Status_t audio_Out_Start_Thread() {
 Audio_Out_Status_t audio_Out_Stop_Thread() {
 
     __gs_Audio_Obj.stop_Thread = 1;
+
+    if(pthread_join(__gs_Audio_Obj.audio_Out_Thread, NULL) != 0)
+        return AUDIO_OUT_FAIL;
+    
     return AUDIO_OUT_OK;
 
 }
 
-Audio_Out_Status_t audio_Out_Close();
+Audio_Out_Status_t audio_Out_Close() {
+
+    if(pthread_mutex_destroy(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock) != 0))
+        return AUDIO_OUT_FAIL;
+
+    SDL_CloseAudio();
+    return AUDIO_OUT_OK;
+    
+}
 
 void audio_Out_Callback(void* data, Uint8 *stream, int len) {
 
