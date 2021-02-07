@@ -27,14 +27,12 @@ static void * audio_Player_Core(void *);
 
 typedef struct __AUDIO_OP_INTERNAL {
 
-    pthread_t               audio_Out_Thread;
-    Uint8                   stop_Thread;
     Audio_Out_t            *ao_Out_Obj_ptr;
     SDL_AudioSpec          *sdl_Audio_Spec_Ptr;
 
 } Audio_OP_Internal_t;
 
-static Audio_OP_Internal_t __gs_Audio_Obj;
+Audio_OP_Internal_t __gs_Audio_Obj;
 
 Audio_Out_Status_t audio_Out_Init(Audio_Out_t *ao_user_Obj) {
 
@@ -60,7 +58,6 @@ Audio_Out_Status_t audio_Out_Init(Audio_Out_t *ao_user_Obj) {
     }
 
     ao_user_Obj->ip_Data_Buffer_MUX = 0;
-    __gs_Audio_Obj.stop_Thread = 1;
     __gs_Audio_Obj.ao_Out_Obj_ptr = ao_user_Obj;
     __gs_Audio_Obj.sdl_Audio_Spec_Ptr = __audio_Spec_Ptr;
 
@@ -74,20 +71,14 @@ __Free_mem_N_Return:
 
 Audio_Out_Status_t audio_Out_Start_Thread() {
 
-    if(pthread_create(&(__gs_Audio_Obj.audio_Out_Thread), NULL, audio_Player_Core, NULL) != 0)
-        return AUDIO_OUT_FAIL;
-
+    SDL_PauseAudio(0);
     return AUDIO_OUT_OK;
 
 }
 
 Audio_Out_Status_t audio_Out_Stop_Thread() {
 
-    __gs_Audio_Obj.stop_Thread = 1;
-
-    if(pthread_join(__gs_Audio_Obj.audio_Out_Thread, NULL) != 0)
-        return AUDIO_OUT_FAIL;
-    
+    SDL_PauseAudio(1);
     return AUDIO_OUT_OK;
 
 }
@@ -108,31 +99,18 @@ void audio_Out_Callback(void* data, Uint8 *stream, int len) {
     OP_DBUF_T *temp_buf_ptr;
 
     pthread_mutex_lock(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock));
+
     if(__gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_0) {
         __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_1;
         temp_buf_ptr = __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_0;
     } else if(__gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_1) {
         __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_0;
         temp_buf_ptr = __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_1;
-    } else {
-        return;
-    }
+    } 
+
     pthread_mutex_unlock(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock));
 
     memcpy(stream, temp_buf_ptr, len);
     
 } 
 
-static void * audio_Player_Core(void *args) {
-
-    (void *) args;
-
-    SDL_PauseAudio(0);
-
-    while(!__gs_Audio_Obj.stop_Thread) {
-        sleep(PLAYER_CORE_SLEEP_TIME);
-    }
-
-    SDL_PauseAudio(1);
-
-}

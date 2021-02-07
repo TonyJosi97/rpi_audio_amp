@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <unistd.h>
 
 #define S_FREQ      44100
 #define SAMPLES     8192
@@ -18,7 +19,7 @@ int main(int argc, char* argv[]) {
     main_Obj.ip_Data_Buffer_0 = (OP_DBUF_T *) malloc(sizeof(OP_DBUF_T) * SAMPLES);
     main_Obj.ip_Data_Buffer_1 = (OP_DBUF_T *) malloc(sizeof(OP_DBUF_T) * SAMPLES);
     
-    if(audio_Out_Init(&main_Obj) != 0) {
+    if(audio_Out_Init(&main_Obj) != AUDIO_OUT_OK) {
         printf("Init Failed\n");
     }
 
@@ -26,9 +27,9 @@ int main(int argc, char* argv[]) {
     audio_Out_Start_Thread();
 
     while (1) {
+        sleep(1);
         fill_Buffer(&main_Obj);
     }
-    
 
     return 0;
 
