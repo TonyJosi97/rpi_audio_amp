@@ -11,6 +11,8 @@
  *  @bug            No known bugs.
  */
 
+#include <SDL/SDL.h>
+#include <SDL/SDL_audio.h>
 #include <stdint.h>
 #include <pthread.h>
 #include <sys/types.h>

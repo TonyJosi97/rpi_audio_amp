@@ -11,8 +11,6 @@
  *  @bug            No known bugs.
  */
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_audio.h>
 #include <math.h>
 #include <sys/types.h>
 #include <stdio.h>
@@ -61,6 +59,7 @@ Audio_Out_Status_t audio_Out_Init(Audio_Out_t *ao_user_Obj) {
         return AUDIO_OUT_FAIL; 
     }
 
+    ao_user_Obj->ip_Data_Buffer_MUX = 0;
     __gs_Audio_Obj.stop_Thread = 1;
     __gs_Audio_Obj.ao_Out_Obj_ptr = ao_user_Obj;
     __gs_Audio_Obj.sdl_Audio_Spec_Ptr = __audio_Spec_Ptr;
@@ -110,8 +109,10 @@ void audio_Out_Callback(void* data, Uint8 *stream, int len) {
 
     pthread_mutex_lock(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock));
     if(__gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_0) {
+        __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_1;
         temp_buf_ptr = __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_0;
     } else if(__gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_1) {
+        __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_0;
         temp_buf_ptr = __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_1;
     } else {
         return AUDIO_OUT_FAIL;
