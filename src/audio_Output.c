@@ -17,8 +17,13 @@
 #include <unistd.h>
 #include <errno.h>
 #include <assert.h>
+#include <stdio.h>
 
 #include "../inc/audio_Output.h"
+
+#define S_FREQ      44100
+#define VOLUME      127.0
+
 
 #define __NULL_POINTER_CHECK(ptr)   assert(ptr != NULL)
 
@@ -45,13 +50,10 @@ Audio_Out_Status_t audio_Out_Init(Audio_Out_t *ao_user_Obj) {
 
     __audio_Spec_Ptr->freq = ao_user_Obj->sampling_Freq;
     __audio_Spec_Ptr->format = AUDIO_U8;
+    __audio_Spec_Ptr->channels = 1;
     __audio_Spec_Ptr->samples = ao_user_Obj->samples_Per_Frame;
-    __audio_Spec_Ptr->callback = audio_Out_Callback;
-    __audio_Spec_Ptr->userdata = ao_user_Obj;
-
-    if (pthread_mutex_init(&(ao_user_Obj->buf_Lock), NULL) != 0) {
-        return AUDIO_OUT_FAIL;
-    }
+    __audio_Spec_Ptr->callback = (*audio_Out_Callback);
+    __audio_Spec_Ptr->userdata = NULL;
 
     if(SDL_OpenAudio(__audio_Spec_Ptr, NULL) != 0) {
         return AUDIO_OUT_FAIL; 
@@ -96,21 +98,28 @@ Audio_Out_Status_t audio_Out_Close() {
 
 void audio_Out_Callback(void* data, Uint8 *stream, int len) {
 
-    OP_DBUF_T *temp_buf_ptr;
+    OP_DBUF_T *temp_buf_ptr = __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_0;
+    //printf("Len: %d\n", len);
 
-    pthread_mutex_lock(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock));
-
+    //pthread_mutex_lock(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock));
+    /*
     if(__gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_0) {
         __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_1;
         temp_buf_ptr = __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_0;
-    } else if(__gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_1) {
+    } else {
         __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_MUX == AUDIO_OUT_BUFFER_0;
         temp_buf_ptr = __gs_Audio_Obj.ao_Out_Obj_ptr->ip_Data_Buffer_1;
     } 
+    */
 
-    pthread_mutex_unlock(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock));
+    for (int i = 0; i < len; ++i) {
+        //if(temp_buf_ptr[i] == 0)
+        //printf("%d\n", temp_buf_ptr[i]);
+        stream[i] = (OP_DBUF_T) (VOLUME * sinf(2 * M_PI * 100 / S_FREQ * i)) + 127;
+    }
 
-    memcpy(stream, temp_buf_ptr, len);
+    //memcpy(stream, temp_buf_ptr, len);
+    //pthread_mutex_unlock(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock));
     
 } 
 
