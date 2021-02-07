@@ -42,7 +42,9 @@ Audio_Out_Status_t audio_Out_Init(Audio_Out_t *ao_user_Obj) {
     __NULL_POINTER_CHECK(ao_user_Obj);
 
     SDL_AudioSpec *__audio_Spec_Ptr = malloc(sizeof(SDL_AudioSpec));
-    if(__audio_Spec_Ptr == NULL) goto __Free_mem_N_Return;
+    if(__audio_Spec_Ptr == NULL) { 
+        goto __Free_mem_N_Return; 
+    }
 
     __audio_Spec_Ptr->freq = ao_user_Obj->sampling_Freq;
     __audio_Spec_Ptr->format = AUDIO_U8;
@@ -54,8 +56,9 @@ Audio_Out_Status_t audio_Out_Init(Audio_Out_t *ao_user_Obj) {
         return AUDIO_OUT_FAIL;
     }
 
-    if(SDL_OpenAudio(__audio_Spec_Ptr, NULL) != 0) 
+    if(SDL_OpenAudio(__audio_Spec_Ptr, NULL) != 0) {
         return AUDIO_OUT_FAIL; 
+    }
 
     __gs_Audio_Obj.stop_Thread = 1;
     __gs_Audio_Obj.ao_Out_Obj_ptr = ao_user_Obj;
