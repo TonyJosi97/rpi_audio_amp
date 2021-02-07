@@ -50,15 +50,15 @@ Audio_Out_Status_t audio_Out_Init(Audio_Out_t *ao_user_Obj) {
     __audio_Spec_Ptr->callback = audio_Out_Callback;
     __audio_Spec_Ptr->userdata = ao_user_Obj;
 
+    if (pthread_mutex_init(&(ao_user_Obj->buf_Lock), NULL) != 0) {
+        return AUDIO_OUT_FAIL;
+    }
+
     if(SDL_OpenAudio(__audio_Spec_Ptr, NULL) != 0) 
         return AUDIO_OUT_FAIL; 
 
     __gs_Audio_Obj.stop_Thread = 1;
     __gs_Audio_Obj.ao_Out_Obj_ptr = ao_user_Obj;
-
-    if (pthread_mutex_init(&(__gs_Audio_Obj.ao_Out_Obj_ptr->buf_Lock), NULL) != 0) {
-        return AUDIO_OUT_FAIL;
-    }
 
     return AUDIO_OUT_OK;
 
@@ -95,7 +95,7 @@ Audio_Out_Status_t audio_Out_Close() {
 
     SDL_CloseAudio();
     return AUDIO_OUT_OK;
-    
+
 }
 
 void audio_Out_Callback(void* data, Uint8 *stream, int len) {
