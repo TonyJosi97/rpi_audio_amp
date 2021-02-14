@@ -108,6 +108,7 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
         printf("Error transitting data");
         return -1;
     }
+    printf("Data RX: %u %u\n", ((uint16_t *) rx_buff)[100], ((uint16_t *) rx_buff)[200]);
     printf("Transmission done. \n");
     
     return 0;
