@@ -13,11 +13,17 @@
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 
+/* Master H/W CFG */
 #define _T_SPI_CPHA_CPOL       0
 #define _T_SPI_MODE            (SPI_NO_CS | SPI_RX_OCTAL | _T_SPI_CPHA_CPOL)
 #define _T_SPI_DATA_RATE       (1000000U)
 #define _T_SPI_NO_OF_BITS      (8)
 #define _T_SPI_DEVICE_NAME      "/dev/spidev0.1"
+
+/* Slave specific data */
+#define DATA_BUFFER_SIZE			2205
+#define DATA_BUFFER_SAMPLE_SIZE		(DATA_BUFFER_SIZE * 2)
+#define SPI_NO_OF_BYTES_TO_TX		(DATA_BUFFER_SAMPLE_SIZE * 2)
 
 static uint32_t     _spi__Mode          = _T_SPI_MODE;
 static uint32_t     _spi__DataRate      = _T_SPI_DATA_RATE;
@@ -65,6 +71,21 @@ int main() {
     if(spi_Handle != 0) {
         printf("Error reading data rate\n");
     }
+
+    uint8_t *rx_Buffer = NULL;
+    rx_Buffer = malloc(sizeof(uint8_t) * SPI_NO_OF_BYTES_TO_TX);
+    if(rx_Buffer) {
+        printf("Error allocating buffer memory");
+        goto free_and_close;
+    }
+
+    if(SPI_HAL_ReceiveData(spi_Handle, rx_Buffer, SPI_NO_OF_BYTES_TO_TX) != 0) {
+        printf("Error receiving data");
+    }
+
+    free_and_close:
+close(spi_Handle);
+free(rx_Buffer)
 
     return 0;
 }
