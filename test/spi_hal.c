@@ -68,3 +68,26 @@ int main() {
 
     return 0;
 }
+
+static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
+
+    struct spi_ioc_transfer transfer_Obj = {
+		.tx_buf = 0,
+		.rx_buf = (unsigned long)rx_buff,
+		.len = data_len,
+		.delay_usecs = 0,
+		.speed_hz = _spi__DataRate,
+		.bits_per_word = _spi__NoOfBits,
+    };
+
+    int ret_Code = 0;
+    ret_Code = ioctl(fd, SPI_IOC_MESSAGE(1), &transfer_Obj);
+    if(ret_Code != 0) {
+        printf("Error transitting data");
+        return -1;
+    }
+    printf("Transmission done. \n");
+    
+    return 0;
+
+}
