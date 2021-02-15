@@ -110,7 +110,7 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
     int ret_Code = 0;
     
     ret_Code = ioctl(spi_fd, SPI_IOC_MESSAGE(1), &transfer_Obj);
-    if(ret_Code != 0) {
+    if(ret_Code < 0) {
         printf("Error transitting data");
         return -1;
     }
