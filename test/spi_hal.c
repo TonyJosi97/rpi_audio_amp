@@ -83,6 +83,8 @@ int main() {
         goto free_and_close;
     }
 
+    printf("CFG -> MODE: %u, %u, %u\n", _spi__Mode, _spi__NoOfBits, _spi__DataRate);
+
     if(SPI_HAL_ReceiveData(spi_Handle, rx_Buffer, SPI_NO_OF_BYTES_TO_TX) != 0) {
         printf("Error receiving data");
     }
