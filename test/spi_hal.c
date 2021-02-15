@@ -47,38 +47,38 @@ int main() {
     int ret_Code = 0;
 
     ret_Code = ioctl(spi_Handle, SPI_IOC_WR_MODE32, &_spi__Mode);
-    if(spi_Handle != 0) {
+    if(ret_Code < 0) {
         printf("Error setting mode\n");
     }
 
     ret_Code = ioctl(spi_Handle, SPI_IOC_RD_MODE32, &_spi__Mode);
-    if(spi_Handle != 0) {
+    if(ret_Code < 0) {
         printf("Error reading mode\n");
     }
 
     ret_Code = ioctl(spi_Handle, SPI_IOC_WR_BITS_PER_WORD, &_spi__NoOfBits);
-    if(spi_Handle != 0) {
+    if(ret_Code < 0) {
         printf("Error setting no. bits\n");
     }
 
     ret_Code = ioctl(spi_Handle, SPI_IOC_WR_BITS_PER_WORD, &_spi__NoOfBits);
-    if(spi_Handle != 0) {
+    if(ret_Code < 0) {
         printf("Error reading no. bits\n");
     }
 
     ret_Code = ioctl(spi_Handle, SPI_IOC_WR_MAX_SPEED_HZ, &_spi__DataRate);
-    if(spi_Handle != 0) {
+    if(ret_Code < 0) {
         printf("Error setting data rate\n");
     }
 
     ret_Code = ioctl(spi_Handle, SPI_IOC_RD_MAX_SPEED_HZ, &_spi__DataRate);
-    if(spi_Handle != 0) {
+    if(ret_Code < 0) {
         printf("Error reading data rate\n");
     }
 
     uint8_t *rx_Buffer = NULL;
     rx_Buffer = malloc(sizeof(uint8_t) * SPI_NO_OF_BYTES_TO_TX);
-    if(rx_Buffer) {
+    if(!rx_Buffer) {
         printf("Error allocating buffer memory");
         goto free_and_close;
     }
