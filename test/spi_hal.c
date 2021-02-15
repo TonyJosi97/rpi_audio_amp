@@ -13,6 +13,10 @@
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 
+/* TEMP */
+#define	SPI_TX_OCTAL	        0x2000
+#define	SPI_RX_OCTAL            0x4000
+
 /* Master H/W CFG */
 #define _T_SPI_CPHA_CPOL       0
 #define _T_SPI_MODE            (SPI_NO_CS | SPI_RX_OCTAL | _T_SPI_CPHA_CPOL)
@@ -85,7 +89,7 @@ int main() {
 
     free_and_close:
 close(spi_Handle);
-free(rx_Buffer)
+free(rx_Buffer);
 
     return 0;
 }
@@ -103,7 +107,7 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
 
     int ret_Code = 0;
     
-    ret_Code = ioctl(fd, SPI_IOC_MESSAGE(1), &transfer_Obj);
+    ret_Code = ioctl(spi_fd, SPI_IOC_MESSAGE(1), &transfer_Obj);
     if(ret_Code != 0) {
         printf("Error transitting data");
         return -1;
