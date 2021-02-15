@@ -19,7 +19,7 @@
 
 /* Master H/W CFG */
 #define _T_SPI_CPHA_CPOL       0
-#define _T_SPI_MODE            (SPI_NO_CS | SPI_RX_OCTAL | _T_SPI_CPHA_CPOL)
+#define _T_SPI_MODE            (SPI_NO_CS | SPI_RX_DUAL | _T_SPI_CPHA_CPOL)
 #define _T_SPI_DATA_RATE       (1000000U)
 #define _T_SPI_NO_OF_BITS      (8)
 #define _T_SPI_DEVICE_NAME      "/dev/spidev0.1"
