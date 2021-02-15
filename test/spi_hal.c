@@ -85,8 +85,11 @@ int main() {
 
     printf("CFG -> MODE: %u, %u, %u\n", _spi__Mode, _spi__NoOfBits, _spi__DataRate);
 
-    if(SPI_HAL_ReceiveData(spi_Handle, rx_Buffer, SPI_NO_OF_BYTES_TO_TX) != 0) {
-        printf("Error receiving data");
+    while(1) {
+        if(SPI_HAL_ReceiveData(spi_Handle, rx_Buffer, SPI_NO_OF_BYTES_TO_TX) != 0) {
+            printf("Error receiving data\n");
+        }
+        usleep(500 * 1000);
     }
 
     free_and_close:
@@ -111,7 +114,7 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
     
     ret_Code = ioctl(spi_fd, SPI_IOC_MESSAGE(1), &transfer_Obj);
     if(ret_Code < 0) {
-        printf("Error transitting data");
+        printf("Error transitting data\n");
         return -1;
     }
     printf("Data RX: %u %u\n", ((uint16_t *) rx_buff)[100], ((uint16_t *) rx_buff)[200]);
