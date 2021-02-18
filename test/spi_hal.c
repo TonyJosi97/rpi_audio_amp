@@ -68,8 +68,7 @@ int main() {
 
 
 
-    
-
+    /*
     ret_Code = ioctl(spi_Handle, SPI_IOC_WR_MODE, &_spi__Mode);
     if(ret_Code < 0) {
         printf("Error setting mode\n");
@@ -99,6 +98,7 @@ int main() {
     if(ret_Code < 0) {
         printf("Error reading data rate\n");
     }
+    */
 
     uint8_t *rx_Buffer = NULL;
     rx_Buffer = malloc(sizeof(uint8_t) * TEMP_SIZE_RX);
@@ -140,7 +140,7 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
     
     ret_Code = read(spi_fd, rx_buff, data_len);
     if(ret_Code < 0) {
-        printf("Error transitting data\n");
+        printf("Error transitting data %d\n", ret_Code);
         return -1;
     }
     printf("Data RX: %u %u\n", ((uint16_t *) rx_buff)[100], ((uint16_t *) rx_buff)[200]);
