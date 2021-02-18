@@ -45,7 +45,7 @@ int main() {
     }
 
     uint32_t temp_Val = 0;
-    ret_Code = ioctl(spi_Handle, SPI_IOC_RD_MODE32, &temp_Val);
+    ret_Code = ioctl(spi_Handle, SPI_IOC_RD_MODE, &temp_Val);
     if(ret_Code < 0) {
         printf("Error reading mode\n");
     }
@@ -67,12 +67,12 @@ int main() {
 
     int ret_Code = 0;
 
-    ret_Code = ioctl(spi_Handle, SPI_IOC_WR_MODE32, &_spi__Mode);
+    ret_Code = ioctl(spi_Handle, SPI_IOC_WR_MODE, &_spi__Mode);
     if(ret_Code < 0) {
         printf("Error setting mode\n");
     }
 
-    ret_Code = ioctl(spi_Handle, SPI_IOC_RD_MODE32, &_spi__Mode);
+    ret_Code = ioctl(spi_Handle, SPI_IOC_RD_MODE, &_spi__Mode);
     if(ret_Code < 0) {
         printf("Error reading mode\n");
     }
