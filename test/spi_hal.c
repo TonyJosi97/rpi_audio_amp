@@ -29,6 +29,8 @@
 #define DATA_BUFFER_SAMPLE_SIZE		(DATA_BUFFER_SIZE * 2)
 #define SPI_NO_OF_BYTES_TO_TX		(DATA_BUFFER_SAMPLE_SIZE * 2)
 
+#define TEMP_SIZE_RX                2500
+
 static uint32_t     _spi__Mode          = _T_SPI_MODE;
 static uint32_t     _spi__DataRate      = _T_SPI_DATA_RATE;
 static uint8_t      _spi__NoOfBits      = _T_SPI_NO_OF_BITS;
@@ -98,7 +100,7 @@ int main() {
     }
 
     uint8_t *rx_Buffer = NULL;
-    rx_Buffer = malloc(sizeof(uint8_t) * SPI_NO_OF_BYTES_TO_TX);
+    rx_Buffer = malloc(sizeof(uint8_t) * TEMP_SIZE_RX);
     if(!rx_Buffer) {
         printf("Error allocating buffer memory");
         goto free_and_close;
@@ -107,7 +109,7 @@ int main() {
     printf("CFG -> MODE: %u, %u, %u\n", _spi__Mode, _spi__NoOfBits, _spi__DataRate);
 
     while(1) {
-        if(SPI_HAL_ReceiveData(spi_Handle, rx_Buffer, SPI_NO_OF_BYTES_TO_TX) != 0) {
+        if(SPI_HAL_ReceiveData(spi_Handle, rx_Buffer, TEMP_SIZE_RX) != 0) {
             printf("Error receiving data\n");
         }
         usleep(500 * 1000);
