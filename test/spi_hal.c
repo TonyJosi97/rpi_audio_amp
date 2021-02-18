@@ -38,7 +38,7 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len);
 int main() {
 
     int spi_Handle;
-    spi_Handle = open(_T_SPI_DEVICE_NAME, O_RDWR);
+    spi_Handle = open(_T_SPI_DEVICE_NAME, O_RDWR, 0);
     if(spi_Handle < 0) {
         printf("Error opening device\n");
         return 0;
@@ -101,6 +101,7 @@ free(rx_Buffer);
 
 static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
 
+    /*
     struct spi_ioc_transfer transfer_Obj = {
 		.tx_buf = 0,
 		.rx_buf = (unsigned long)rx_buff,
@@ -111,8 +112,8 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
     };
 
     int ret_Code = 0;
-    
-    ret_Code = ioctl(spi_fd, SPI_IOC_MESSAGE(1), &transfer_Obj);
+    */
+    ret_Code = read(spi_fd, rx_buff, data_len);
     if(ret_Code < 0) {
         printf("Error transitting data\n");
         return -1;
