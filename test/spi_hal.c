@@ -51,7 +51,7 @@ int main() {
     }
     printf("Data: %u\n", temp_Val);
 
-    ret_Code = ioctl(spi_Handle, SPI_IOC_WR_BITS_PER_WORD, &temp_Val);
+    ret_Code = ioctl(spi_Handle, SPI_IOC_RD_BITS_PER_WORD, &temp_Val);
     if(ret_Code < 0) {
         printf("Error reading no. bits\n");
     }
@@ -82,7 +82,7 @@ int main() {
         printf("Error setting no. bits\n");
     }
 
-    ret_Code = ioctl(spi_Handle, SPI_IOC_WR_BITS_PER_WORD, &_spi__NoOfBits);
+    ret_Code = ioctl(spi_Handle, SPI_IOC_RD_BITS_PER_WORD, &_spi__NoOfBits);
     if(ret_Code < 0) {
         printf("Error reading no. bits\n");
     }
