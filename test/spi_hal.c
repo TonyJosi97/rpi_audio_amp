@@ -113,7 +113,7 @@ int main() {
         if(SPI_HAL_ReceiveData(spi_Handle, rx_Buffer, TEMP_SIZE_RX) != 0) {
             printf("Error receiving data\n");
         }
-        usleep(500 * 1000);
+        //usleep(500 * 1000);
     }
 
     free_and_close:
@@ -143,7 +143,12 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
         printf("Error transitting data %d\n", ret_Code);
         return -1;
     }
-    printf("Data RX: %u %u\n", ((uint16_t *) rx_buff)[100], ((uint16_t *) rx_buff)[200]);
+    //printf("Data RX: %u %u\n", ((uint16_t *) rx_buff)[100], ((uint16_t *) rx_buff)[200]);
+    
+    for(int i = 0; i < ret_Code / 2; i = i + 4) {
+       printf("%u ", ((uint16_t *) rx_buff)[i]);
+    }
+    
     printf("Transmission done. \n");
     
     return 0;
