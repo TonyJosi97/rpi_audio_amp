@@ -46,6 +46,7 @@ int main() {
         return 0;
     }
 
+    int ret_Code = 0;
     uint32_t temp_Val = 0;
     ret_Code = ioctl(spi_Handle, SPI_IOC_RD_MODE, &temp_Val);
     if(ret_Code < 0) {
@@ -67,7 +68,7 @@ int main() {
 
 
 
-    int ret_Code = 0;
+    
 
     ret_Code = ioctl(spi_Handle, SPI_IOC_WR_MODE, &_spi__Mode);
     if(ret_Code < 0) {
@@ -134,8 +135,9 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
 		.bits_per_word = _spi__NoOfBits,
     };
 
-    int ret_Code = 0;
     */
+    int ret_Code = 0;
+    
     ret_Code = read(spi_fd, rx_buff, data_len);
     if(ret_Code < 0) {
         printf("Error transitting data\n");
