@@ -44,6 +44,27 @@ int main() {
         return 0;
     }
 
+    uint32_t temp_Val = 0;
+    ret_Code = ioctl(spi_Handle, SPI_IOC_RD_MODE32, &temp_Val);
+    if(ret_Code < 0) {
+        printf("Error reading mode\n");
+    }
+    printf("Data: %u\n", temp_Val);
+
+    ret_Code = ioctl(spi_Handle, SPI_IOC_WR_BITS_PER_WORD, &temp_Val);
+    if(ret_Code < 0) {
+        printf("Error reading no. bits\n");
+    }
+    printf("Data: %u\n", temp_Val);
+
+    ret_Code = ioctl(spi_Handle, SPI_IOC_RD_MAX_SPEED_HZ, &temp_Val);
+    if(ret_Code < 0) {
+        printf("Error reading data rate\n");
+    }
+    printf("Data: %u\n", temp_Val);
+
+
+
     int ret_Code = 0;
 
     ret_Code = ioctl(spi_Handle, SPI_IOC_WR_MODE32, &_spi__Mode);
