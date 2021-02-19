@@ -142,8 +142,8 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
     }
     printf("RX - Recieved: %d bytes\n", ret_Code);
     
-    for(int i = 0; i < ret_Code / 2; i = i + 4) {
-       printf("%u ", ((uint16_t *) rx_buff)[i]);
+    for(int i = 0; i < ret_Code; i = i + 4) {
+       printf("%u ", (rx_buff)[i]);
     }
     
     printf("Transmission done. \n");
