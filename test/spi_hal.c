@@ -25,11 +25,8 @@
 #define _T_SPI_DEVICE_NAME      "/dev/spidev0.0"
 
 /* Slave specific data */
-#define DATA_BUFFER_SIZE			2205
-#define DATA_BUFFER_SAMPLE_SIZE		(DATA_BUFFER_SIZE * 2)
-#define SPI_NO_OF_BYTES_TO_TX		(DATA_BUFFER_SAMPLE_SIZE * 2)
 
-#define TEMP_SIZE_RX                2500
+#define TEMP_SIZE_RX                (625 * 4)
 
 static uint32_t     _spi__Mode          = _T_SPI_MODE;
 static uint32_t     _spi__DataRate      = _T_SPI_DATA_RATE;
@@ -143,7 +140,7 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
         printf("Error transitting data %d\n", ret_Code);
         return -1;
     }
-    //printf("Data RX: %u %u\n", ((uint16_t *) rx_buff)[100], ((uint16_t *) rx_buff)[200]);
+    printf("RX - Recieved: %d bytes\n", ret_Code);
     
     for(int i = 0; i < ret_Code / 2; i = i + 4) {
        printf("%u ", ((uint16_t *) rx_buff)[i]);
