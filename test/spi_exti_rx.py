@@ -22,7 +22,7 @@ def run():
     #spi.mode = 0b00             # try 01
     #spi.no_cs = True    
 
-    while True:
+    for _ in range(100):
         GPIO.output(GPIO_EXTI, GPIO.HIGH)
         data = spi.readbytes(SPI_TX_SIZE)
         print(data)
@@ -31,9 +31,12 @@ def run():
         time.sleep(0.005)
 
 
+def clean_up():
+    GPIO.cleanup()
 
 
 if __name__ == "__main__":
 
     setup()
     run()
+    clean_up()
