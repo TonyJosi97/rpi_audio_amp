@@ -23,8 +23,12 @@ def run():
     #spi.no_cs = True    
 
     while True:
-
-        data = spi.readbytes(4000)
+        GPIO.output(GPIO_EXTI, GPIO.HIGH)
+        data = spi.readbytes(SPI_TX_SIZE)
+        print(data)
+        time.sleep(0.1)
+        GPIO.output(GPIO_EXTI, GPIO.LOW)
+        time.sleep(0.005)
 
 
 
