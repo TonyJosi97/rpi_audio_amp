@@ -11,6 +11,7 @@ def setup():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(GPIO_EXTI, GPIO.OUT)
 
+
 def run():
 
     spi = spidev.SpiDev()
