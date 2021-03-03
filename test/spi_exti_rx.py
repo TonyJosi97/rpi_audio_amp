@@ -16,12 +16,13 @@ def run():
 
     spi = spidev.SpiDev()
 
-    spi.open(0, 0)
-    #spi.cshigh = True
-    spi.bits_per_word = 4
+    spi.open(0, 1)
+    spi.cshigh = True
+    spi.bits_per_word = 8
     spi.max_speed_hz = 1000000
-    #spi.mode = 0b00             # try 01
-    #spi.no_cs = True    
+    spi.mode = 0b00             # try 01
+    spi.no_cs = True    
+    #spi.threewire = True
 
     for _ in range(100):
         GPIO.output(GPIO_EXTI, GPIO.HIGH)

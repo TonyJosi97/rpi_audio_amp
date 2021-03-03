@@ -20,7 +20,7 @@
 /* Master H/W CFG */
 #define _T_SPI_CPHA_CPOL       0
 #define _T_SPI_MODE            (SPI_NO_CS | _T_SPI_CPHA_CPOL)
-#define _T_SPI_DATA_RATE       (1000000U)
+#define _T_SPI_DATA_RATE       (500000U)
 #define _T_SPI_NO_OF_BITS      (8)
 #define _T_SPI_DEVICE_NAME      "/dev/spidev0.0"
 
@@ -110,7 +110,7 @@ int main() {
         if(SPI_HAL_ReceiveData(spi_Handle, rx_Buffer, TEMP_SIZE_RX) != 0) {
             printf("Error receiving data\n");
         }
-        //usleep(500 * 1000);
+        usleep(500 * 1000);
     }
 
     free_and_close:
@@ -137,14 +137,14 @@ static int SPI_HAL_ReceiveData(int spi_fd, uint8_t *rx_buff, size_t data_len) {
     int ret_Code = 0;
     
     //ret_Code = read(spi_fd, rx_buff, data_len);
-    ret_Code =  = ioctl(spi_fd, SPI_IOC_MESSAGE(1), &transfer_Obj);
+    ret_Code = ioctl(spi_fd, SPI_IOC_MESSAGE(1), &transfer_Obj);
     if(ret_Code < 1) {
         printf("Error transitting data %d\n", ret_Code);
         return -1;
     }
     printf("RX - Recieved: %d bytes\n", ret_Code);
     
-    for(int i = 0; i < ret_Code; i = i + 4) {
+    for(int i = 0; i < ret_Code; i += 4) {
        printf("%u ", (rx_buff)[i]);
     }
     
