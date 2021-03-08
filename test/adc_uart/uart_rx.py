@@ -60,7 +60,7 @@ class UART_RX_Base:
     def convert_to_Uint16(self, data):
         uint16_arr = []
         i = 0
-        print(b''.join((data[0 : 0 + 2])))
+        #print(b''.join((data[0 : 0 + 2])))
         while(i < (len(data) - 4)):
             byt_ar = b''.join((data[i : i + 2]))
             num = int.from_bytes(byt_ar, byteorder='little', signed=False)
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     prev_time = time.time()
     while(True):
         _data = uart_rx.read_Until('\n\r')
-        uint16_arr = uart_rx.convert_to_Uint8(_data)
+        uint16_arr = uart_rx.convert_to_Uint16(_data)
         #print(str(len(_data)) + " ID: " + str(pckt_cntr) + " TIME DIFF: " + str(time.time() - prev_time) + " VAL: " + str(uint16_arr[100]))
         print(', '.join(map(str, uint16_arr)), end='')
         print(',', end='')
