@@ -3,7 +3,7 @@ import sys
 import datetime
 import time
 
-SERIAL_PORT = 'COM14'
+SERIAL_PORT = 'COM6'
 BAUD_RATE = 921600
 ENABLE_LOG = False
 
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     while(True):
         _data = uart_rx.read_Until('\n\r')
         uint16_arr = uart_rx.convert_to_Uint8(_data)
-        # print(str(len(_data)) + " ID: " + str(pckt_cntr) + " TIME DIFF: " + str(time.time() - prev_time) + " VAL: " + str(uint16_arr[100]))
+        #print(str(len(_data)) + " ID: " + str(pckt_cntr) + " TIME DIFF: " + str(time.time() - prev_time) + " VAL: " + str(uint16_arr[100]))
         print(', '.join(map(str, uint16_arr)), end='')
         print(',', end='')
         prev_time = time.time()

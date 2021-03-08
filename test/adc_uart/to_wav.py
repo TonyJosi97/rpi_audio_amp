@@ -13,5 +13,5 @@ for i in range(len(data[0])):
         pcm_data.append(int(data[0][i]))
 
 npa = np.asarray(pcm_data, dtype=np.uint8)
-write("example.wav", 35000, npa.astype(np.uint8))
+write("example.wav", 48000, npa.astype(np.uint8))
 
