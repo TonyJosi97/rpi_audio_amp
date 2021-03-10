@@ -25,3 +25,4 @@ for i in range(len(data[0])):
 npa = np.asarray(pcm_data, dtype=np.int16)
 write("example.wav", 40000, npa.astype(np.int16))
 
+
